@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity
         rv = findViewById(R.id.recycle);
         LinearLayoutManager lll = new LinearLayoutManager(this);
         rv.setLayoutManager(lll);
-        list.add("initial");
         adapter = new mAdapter(list);
         rv.setAdapter(adapter);
 
@@ -122,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             Log.i("tag", "camera");
             // Handle the camera action
-            String location = city.getText().toString().trim();
+            final String location = city.getText().toString().trim();
             String url = "https://openweathermap.org/data/2.5/weather?q=%s,us&appid=b6907d289e10d714a6e88b30761fae22";
             url = String.format(url, location);
             RequestQueue queue  = Volley.newRequestQueue(this);
@@ -139,12 +138,12 @@ public class MainActivity extends AppCompatActivity
                     JsonObject main = jObject.get("main").getAsJsonObject();
                     String temp = main.get("temp").toString();
                     double fahrenheit = (Double.parseDouble(temp)) * (9/5) + 32;
+                    int fahrenInt = ((int) Math.round(fahrenheit));
 
 
-                    String output = fahrenheit + " degrees Fahrenheit, \n" + description;
+                    String output = location + ":\n" + fahrenInt + " degrees Fahrenheit, \n" + description;
                     Log.i("Tag", output);
 
-                    list.remove(0);
                     list.add(output);
                     adapter.notifyDataSetChanged();
                 }
